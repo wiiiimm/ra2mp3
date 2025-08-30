@@ -76,11 +76,11 @@ cd /path/to/your/ra/files
 curl -fsSL https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/install_macos.sh | bash
 
 # Download the converter script
-curl -O https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/convert_ra_to_mp3.sh
-chmod +x convert_ra_to_mp3.sh
+curl -O https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/ra2mp3
+chmod +x ra2mp3
 
 # Convert your files
-./convert_ra_to_mp3.sh
+./ra2mp3
 ```
 
 **Linux:**
@@ -92,11 +92,11 @@ cd /path/to/your/ra/files
 curl -fsSL https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/install_linux.sh | bash
 
 # Download the converter script
-curl -O https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/convert_ra_to_mp3.sh
-chmod +x convert_ra_to_mp3.sh
+curl -O https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/ra2mp3
+chmod +x ra2mp3
 
 # Convert your files
-./convert_ra_to_mp3.sh
+./ra2mp3
 ```
 
 ### Manual Setup (All Platforms)
@@ -105,12 +105,12 @@ chmod +x convert_ra_to_mp3.sh
 cd /path/to/your/ra/files
 
 # Download the script
-curl -O https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/convert_ra_to_mp3.sh
-chmod +x convert_ra_to_mp3.sh
+curl -O https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/ra2mp3
+chmod +x ra2mp3
 
 # Make sure ffmpeg is installed (see Prerequisites above)
 # Then run the conversion
-./convert_ra_to_mp3.sh
+./ra2mp3
 ```
 
 The converted MP3 files will be saved in a `./converted/` directory, maintaining the original folder structure.
@@ -124,7 +124,7 @@ your-music-folder/
 │   └── track2.ra
 ├── album2/
 │   └── track3.ra
-└── convert_ra_to_mp3.sh
+└── ra2mp3
 
 # After running the script:
 
@@ -140,7 +140,7 @@ your-music-folder/
 │   │   └── track2.mp3
 │   └── album2/
 │       └── track3.mp3
-└── convert_ra_to_mp3.sh
+└── ra2mp3
 ```
 
 ## Output Quality

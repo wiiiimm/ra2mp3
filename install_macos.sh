@@ -71,7 +71,7 @@ echo -e "${GREEN}🎉 Installation complete!${NC}"
 echo
 echo "You can now use ra2mp3:"
 echo "  1. Place this script in a directory with .ra files"
-echo "  2. Run: ./convert_ra_to_mp3.sh"
+echo "  2. Run: ./ra2mp3"
 echo
-echo -e "${BLUE}Tip:${NC} Make sure convert_ra_to_mp3.sh is executable:"
-echo "      chmod +x convert_ra_to_mp3.sh"
+echo -e "${BLUE}Tip:${NC} Make sure ra2mp3 is executable:"
+echo "      chmod +x ra2mp3"
