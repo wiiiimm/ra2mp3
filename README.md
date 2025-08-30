@@ -16,21 +16,28 @@ A simple bash script to convert RealAudio (.ra) files to MP3 format using FFmpeg
 - **bash** (included with macOS/Linux)
 - **macOS/Linux** (Windows users can use WSL)
 
-### Quick Installation (macOS)
+### Quick Installation
 
-We provide an automatic installer that will set up everything for you:
+We provide automatic installers for both macOS and Linux:
 
+**macOS:**
 ```bash
-# Download and run the installer
-curl -fsSL https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/install.sh | bash
-
-# Or if you've already cloned the repo:
-./install.sh
+# Download and run the macOS installer
+curl -fsSL https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/install_macos.sh | bash
 ```
-
 This script will:
 - Install Homebrew (if not already installed)
 - Install FFmpeg via Homebrew
+- Verify everything is working
+
+**Linux:**
+```bash
+# Download and run the Linux installer
+curl -fsSL https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/install_linux.sh | bash
+```
+This script will:
+- Detect your Linux distribution (Ubuntu, Fedora, CentOS, Arch, etc.)
+- Install FFmpeg using the appropriate package manager
 - Verify everything is working
 
 ### Manual Installation
@@ -58,13 +65,31 @@ sudo yum install ffmpeg
 
 ## Usage
 
-### Quick Start (macOS)
+### Quick Start
+
+**macOS:**
 ```bash
 # Go to your directory with .ra files
 cd /path/to/your/ra/files
 
 # Download and run the installer
-curl -fsSL https://raw.githubusercontent.com/yourusername/ra2mp3/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/install_macos.sh | bash
+
+# Download the converter script
+curl -O https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/convert_ra_to_mp3.sh
+chmod +x convert_ra_to_mp3.sh
+
+# Convert your files
+./convert_ra_to_mp3.sh
+```
+
+**Linux:**
+```bash
+# Go to your directory with .ra files
+cd /path/to/your/ra/files
+
+# Download and run the installer
+curl -fsSL https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/install_linux.sh | bash
 
 # Download the converter script
 curl -O https://raw.githubusercontent.com/wiiiimm/ra2mp3/main/convert_ra_to_mp3.sh
