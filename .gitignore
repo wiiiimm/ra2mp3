@@ -1,7 +1,9 @@
 # Converted output directory
 converted/
 
-# Test files
+# Test files and directories
+test/
+tests/
 *.ra
 *.mp3
 

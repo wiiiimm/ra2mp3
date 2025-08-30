@@ -115,6 +115,41 @@ chmod +x ra2mp3
 
 The converted MP3 files will be saved in a `./converted/` directory, maintaining the original folder structure.
 
+## Advanced Usage
+
+The script supports several command-line options for more control:
+
+```bash
+./ra2mp3 [OPTIONS]
+
+Options:
+  -i, --input DIR      Input directory to search for .ra files (default: current directory)
+  -o, --output DIR     Output directory for converted files (default: converted/)
+  --overwrite          Overwrite existing MP3 files
+  --dry-run            Show what would be converted without actually converting
+  -v, --version        Show version information
+  -h, --help           Show this help message
+```
+
+### Examples
+
+```bash
+# Convert files from a specific directory
+./ra2mp3 --input /path/to/music
+
+# Save converted files to a specific location
+./ra2mp3 --output /tmp/mp3s
+
+# Overwrite existing MP3 files
+./ra2mp3 --overwrite
+
+# Preview what would be converted (dry run)
+./ra2mp3 --dry-run
+
+# Combine options
+./ra2mp3 --input /old/music --output /new/mp3s --overwrite --dry-run
+```
+
 ## Example
 
 ```

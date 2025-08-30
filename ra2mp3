@@ -13,8 +13,43 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Handle command line arguments
-if [[ $# -gt 0 ]]; then
+# Default values
+INPUT_DIR="."
+OUTPUT_DIR="converted"
+OVERWRITE=false
+DRY_RUN=false
+
+# Function to show help
+show_help() {
+    echo "ra2mp3 v$VERSION - Convert RealAudio files to MP3"
+    echo
+    echo "Usage: $0 [OPTIONS]"
+    echo
+    echo "Options:"
+    echo "  -i, --input DIR      Input directory to search for .ra files (default: current directory)"
+    echo "  -o, --output DIR     Output directory for converted files (default: converted/)"
+    echo "  --overwrite          Overwrite existing MP3 files"
+    echo "  --dry-run            Show what would be converted without actually converting"
+    echo "  -v, --version        Show version information"
+    echo "  -h, --help           Show this help message"
+    echo
+    echo "Description:"
+    echo "  Recursively converts all .ra files in the input directory and"
+    echo "  subdirectories to MP3 format. Output files are saved in the"
+    echo "  specified output directory maintaining the original structure."
+    echo
+    echo "Examples:"
+    echo "  $0                           Convert all .ra files in current directory"
+    echo "  $0 --input /path/to/music    Convert files from specific directory"
+    echo "  $0 --output /tmp/mp3s        Save converted files to specific location"
+    echo "  $0 --overwrite               Overwrite existing MP3 files"
+    echo "  $0 --dry-run                 Preview what would be converted"
+    echo "  $0 --version                 Show version"
+    echo
+}
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
     case "$1" in
         -v|--version)
             echo "ra2mp3 v$VERSION"
@@ -22,24 +57,32 @@ if [[ $# -gt 0 ]]; then
             exit 0
             ;;
         -h|--help)
-            echo "ra2mp3 v$VERSION - Convert RealAudio files to MP3"
-            echo
-            echo "Usage: $0 [OPTIONS]"
-            echo
-            echo "Options:"
-            echo "  -v, --version    Show version information"
-            echo "  -h, --help       Show this help message"
-            echo
-            echo "Description:"
-            echo "  Recursively converts all .ra files in the current directory"
-            echo "  and subdirectories to MP3 format. Output files are saved in"
-            echo "  a 'converted/' directory maintaining the original structure."
-            echo
-            echo "Examples:"
-            echo "  $0               Convert all .ra files in current directory"
-            echo "  $0 --version     Show version"
-            echo
+            show_help
             exit 0
+            ;;
+        -i|--input)
+            if [[ -z "$2" || "$2" == -* ]]; then
+                echo -e "${RED}Error: --input requires a directory argument${NC}"
+                exit 1
+            fi
+            INPUT_DIR="$2"
+            shift 2
+            ;;
+        -o|--output)
+            if [[ -z "$2" || "$2" == -* ]]; then
+                echo -e "${RED}Error: --output requires a directory argument${NC}"
+                exit 1
+            fi
+            OUTPUT_DIR="$2"
+            shift 2
+            ;;
+        --overwrite)
+            OVERWRITE=true
+            shift
+            ;;
+        --dry-run)
+            DRY_RUN=true
+            shift
             ;;
         *)
             echo -e "${RED}Unknown option: $1${NC}"
@@ -47,7 +90,7 @@ if [[ $# -gt 0 ]]; then
             exit 1
             ;;
     esac
-fi
+done
 
 # Check if ffmpeg is installed
 if ! command -v ffmpeg &> /dev/null; then
@@ -59,37 +102,81 @@ if ! command -v ffmpeg &> /dev/null; then
     exit 1
 fi
 
+# Validate input directory
+if [[ ! -d "$INPUT_DIR" ]]; then
+    echo -e "${RED}Error: Input directory '$INPUT_DIR' does not exist${NC}"
+    exit 1
+fi
+
+# Convert INPUT_DIR to absolute path for consistency
+INPUT_DIR=$(cd "$INPUT_DIR" && pwd)
+
 # Count total files to convert
-total_files=$(find . -type f -name '*.ra' | wc -l | tr -d ' ')
+total_files=$(find "$INPUT_DIR" -type f -name '*.ra' | wc -l | tr -d ' ')
 
 if [ "$total_files" -eq 0 ]; then
-    echo -e "${YELLOW}No .ra files found in the current directory and subdirectories.${NC}"
+    echo -e "${YELLOW}No .ra files found in '$INPUT_DIR' and subdirectories.${NC}"
     exit 0
 fi
 
 echo -e "${BLUE}Found $total_files RealAudio files to convert${NC}"
+if [[ "$DRY_RUN" == true ]]; then
+    echo -e "${YELLOW}DRY RUN MODE - No files will be actually converted${NC}"
+fi
+echo -e "${BLUE}Input directory: $INPUT_DIR${NC}"
+echo -e "${BLUE}Output directory: $OUTPUT_DIR${NC}"
 echo
 
 # Initialize counter
 current_file=0
 
-find . -type f -name '*.ra' -print0 | while IFS= read -r -d '' file; do
+find "$INPUT_DIR" -type f -name '*.ra' -print0 | while IFS= read -r -d '' file; do
   current_file=$((current_file + 1))
-  rel="${file#./}"                       # strip leading "./"
+  
+  # Calculate relative path from input directory
+  rel="${file#$INPUT_DIR/}"
+  if [[ "$rel" == "$file" ]]; then
+    # Handle case where file is directly in INPUT_DIR
+    rel="$(basename "$file")"
+  fi
+  
   folder="$(dirname "$rel")"
+  if [[ "$folder" == "." ]]; then
+    folder=""
+  fi
   base="$(basename "$rel" .ra)"
-  outdir="converted/$folder"
+  
+  # Construct output paths
+  if [[ -n "$folder" ]]; then
+    outdir="$OUTPUT_DIR/$folder"
+  else
+    outdir="$OUTPUT_DIR"
+  fi
   outfile="$outdir/$base.mp3"
 
-  mkdir -p "$outdir"
+  # Create output directory only if not in dry-run mode
+  if [[ "$DRY_RUN" != true ]]; then
+    mkdir -p "$outdir"
+  fi
 
+  # Check if output file exists
   if [[ -f "$outfile" ]]; then
-    echo -e "${GREEN}[$current_file/$total_files] ✓ Exists, skip: $outfile${NC}"
-    continue
+    if [[ "$OVERWRITE" != true ]]; then
+      echo -e "${GREEN}[$current_file/$total_files] ✓ Exists, skip: $outfile${NC}"
+      continue
+    else
+      echo -e "${YELLOW}[$current_file/$total_files] ⚠ Overwriting: $outfile${NC}"
+    fi
   fi
 
   if [[ ! -f "$file" ]]; then
     echo -e "${RED}[$current_file/$total_files] ✗ Missing on disk: $file${NC}"
+    continue
+  fi
+
+  # Show what would be done
+  if [[ "$DRY_RUN" == true ]]; then
+    echo -e "${BLUE}[$current_file/$total_files] 🔍 Would convert: $file → $outfile${NC}"
     continue
   fi
 
@@ -109,4 +196,8 @@ find . -type f -name '*.ra' -print0 | while IFS= read -r -d '' file; do
 done
 
 echo
-echo -e "${GREEN}✅ All done! Check ./converted directory for your MP3 files.${NC}"
+if [[ "$DRY_RUN" == true ]]; then
+  echo -e "${GREEN}🔍 Dry run complete! Use without --dry-run to perform actual conversion.${NC}"
+else
+  echo -e "${GREEN}✅ All done! Check $OUTPUT_DIR directory for your MP3 files.${NC}"
+fi
