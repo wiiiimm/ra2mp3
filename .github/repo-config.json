@@ -1,0 +1,13 @@
+{
+  "description": "Convert RealAudio (.ra) files to MP3 format with a simple bash script",
+  "topics": [
+    "audio-conversion",
+    "realaudio", 
+    "mp3",
+    "ffmpeg",
+    "bash-script",
+    "macos",
+    "linux",
+    "command-line-tool"
+  ]
+}
