@@ -1,0 +1,16 @@
+# Converted output directory
+converted/
+
+# Test files
+*.ra
+*.mp3
+
+# macOS
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+
+# Log files
+*.log
