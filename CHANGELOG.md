@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated to version 1.2.0 with enhanced file format support
 - Improved workflow automation for development
 
-## [1.1.0] - 2023-XX-XX
+## [1.1.0] - 2025-08-31
 
 ### Added
 - Command-line options: `--input`, `--output`, `--overwrite`, `--dry-run`
@@ -42,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Better handling of nested directory structures
 - More robust file processing with error recovery
 
-## [1.0.0] - 2023-XX-XX
+## [1.0.0] - 2025-08-31
 
 ### Added
 - Initial release of ra2mp3 conversion tool
