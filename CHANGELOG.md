@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/wiiiimm/ra2mp3/compare/v1.2.0...v1.2.1) (2025-08-31)
+
+
+### Bug Fixes
+
+* correct dates in CHANGELOG.md to 2025 ([cc22e53](https://github.com/wiiiimm/ra2mp3/commit/cc22e53dc296cc993855c35349447415abad1517))
+
 # [1.2.0](https://github.com/wiiiimm/ra2mp3/compare/v1.1.0...v1.2.0) (2025-08-31)
 
 
