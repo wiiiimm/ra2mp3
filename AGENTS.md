@@ -4,14 +4,15 @@
 
 **ra2mp3** is a cross-platform bash script that converts RealAudio (.ra/.ram/.rm) files to MP3 format using FFmpeg. This project was created to help users migrate legacy audio files to a modern, widely-supported format.
 
-### Current Status: v1.2.0 (Production Ready)
+### Current Status: v1.3.0 (Production Ready)
 - ✅ Full feature implementation complete
 - ✅ Cross-platform support (macOS/Linux) 
 - ✅ Comprehensive testing with real RealAudio files
 - ✅ Unicode and special character support
-- ✅ Advanced command-line options
+- ✅ Advanced command-line options with metadata preservation
 - ✅ Semantic release automation and CI/CD workflows
 - ✅ Automated changelog generation and PR title management
+- ✅ Separated dry-run counters and improved metadata handling
 
 ## Repository Structure
 
@@ -40,11 +41,12 @@ ra2mp3/
 ## Core Features
 
 ### Main Script (`ra2mp3`)
-- **Version:** 1.2.0
+- **Version:** 1.3.0
 - **Language:** Bash with strict error handling (`set -euo pipefail`)
 - **Dependencies:** FFmpeg with libmp3lame support
 - **Supported formats:** .ra, .ram, .rm (case-insensitive)
 - **Encoding:** VBR quality 2 (~170-210 kbps)
+- **Metadata:** Preserves original metadata by default, optional stripping with `--strip-metadata`
 
 ### Command-Line Options
 ```bash
@@ -54,6 +56,7 @@ Options:
   -i, --input DIR      Input directory to recursively search for .ra files (default: current directory)
   -o, --output DIR     Output directory for converted files (default: converted/)
   --overwrite          Overwrite existing MP3 files
+  --strip-metadata     Strip metadata for smaller file sizes (default: preserve metadata)
   --dry-run            Show what would be converted without actually converting
   -v, --version        Show version information
   -h, --help           Show this help message
@@ -65,7 +68,9 @@ Options:
 - **Skip Existing:** By default, skips files that already exist (unless --overwrite)
 - **Unicode Support:** Handles Chinese characters, spaces, parentheses in filenames
 - **Progress Tracking:** Shows [X/Total] progress with color-coded status
-- **Error Handling:** Continues processing even if individual files fail
+- **Error Handling:** Continues processing even if individual files fail  
+- **Metadata Preservation:** Preserves original file metadata (title, artist, etc.) by default
+- **Counter Separation:** Dry-run mode shows separate counts for "would convert" vs "skipped" files
 
 ## Installation System
 
@@ -97,12 +102,11 @@ chmod +x ra2mp3
 
 ### Version Management
 - **Format:** Semantic versioning (MAJOR.MINOR.PATCH)
-- **Current:** 1.2.0
+- **Current:** 1.3.0
 - **Automation:** semantic-release handles version bumping and git tags
 - **Update locations:** All 3 scripts (ra2mp3, install_macos.sh, install_linux.sh) + package.json
 - **Release process:** Automated via GitHub Actions on main branch push
-  
-  Note: CHANGELOG.md contains a 1.2.1 entry while scripts and package.json are at 1.2.0. The next semantic-release run should align versions by bumping the files accordingly.
+- **Recent improvements:** Fixed version synchronization issues - all files now properly updated by semantic-release
 
 ### Code Standards
 - **Bash style:** Strict error handling, proper quoting, consistent indentation
@@ -237,5 +241,23 @@ When working on this project:
 
 ---
 
-*Last updated: 2025-08-31 (v1.2.0)*
+*Last updated: 2025-08-31 (v1.3.0)*
 *Remember to update this file when making significant changes to the project.*
+
+## Recent Changes (v1.3.0)
+
+### Metadata Handling Improvements
+- **Breaking Change:** Default behavior now preserves original file metadata
+- **New Flag:** `--strip-metadata` to strip metadata for smaller file sizes
+- **FFmpeg Arguments:** Uses `-map_metadata 0` by default, `-map_metadata -1` with flag
+- **User Impact:** Better preservation of title, artist, album info from RealAudio files
+
+### Counter System Enhancements  
+- **Dry-Run Mode:** Separated "would_convert" count from "skipped" count
+- **Status Display:** Clear distinction between files that would be processed vs already exist
+- **Summary Output:** More accurate reporting in both dry-run and normal modes
+
+### Release Process Fixes
+- **Version Synchronization:** Fixed semantic-release to update all script files properly
+- **Workflow Improvements:** Enhanced PR title normalization and case preservation
+- **Automation Quality:** Removed blocking [skip ci] logic that was preventing releases
