@@ -4,7 +4,7 @@
 
 **ra2mp3** is a cross-platform bash script that converts RealAudio (.ra/.ram/.rm) files to MP3 format using FFmpeg. This project was created to help users migrate legacy audio files to a modern, widely-supported format.
 
-### Current Status: v1.3.0 (Production Ready)
+### Current Status: Production Ready
 - ✅ Full feature implementation complete
 - ✅ Cross-platform support (macOS/Linux) 
 - ✅ Comprehensive testing with real RealAudio files
@@ -13,6 +13,8 @@
 - ✅ Semantic release automation and CI/CD workflows
 - ✅ Automated changelog generation and PR title management
 - ✅ Separated dry-run counters and improved metadata handling
+
+**For current version and recent changes, see [CHANGELOG.md](./CHANGELOG.md)**
 
 ## Repository Structure
 
@@ -41,7 +43,6 @@ ra2mp3/
 ## Core Features
 
 ### Main Script (`ra2mp3`)
-- **Version:** 1.3.0
 - **Language:** Bash with strict error handling (`set -euo pipefail`)
 - **Dependencies:** FFmpeg with libmp3lame support
 - **Supported formats:** .ra, .ram, .rm (case-insensitive)
@@ -102,11 +103,10 @@ chmod +x ra2mp3
 
 ### Version Management
 - **Format:** Semantic versioning (MAJOR.MINOR.PATCH)
-- **Current:** 1.3.0
 - **Automation:** semantic-release handles version bumping and git tags
 - **Update locations:** All 3 scripts (ra2mp3, install_macos.sh, install_linux.sh) + package.json
 - **Release process:** Automated via GitHub Actions on main branch push
-- **Recent improvements:** Fixed version synchronization issues - all files now properly updated by semantic-release
+- **Change tracking:** All releases and changes documented in [CHANGELOG.md](./CHANGELOG.md)
 
 ### Code Standards
 - **Bash style:** Strict error handling, proper quoting, consistent indentation
@@ -241,23 +241,7 @@ When working on this project:
 
 ---
 
-*Last updated: 2025-08-31 (v1.3.0)*
+*Last updated: 2025-08-31*
 *Remember to update this file when making significant changes to the project.*
 
-## Recent Changes (v1.3.0)
-
-### Metadata Handling Improvements
-- **Breaking Change:** Default behavior now preserves original file metadata
-- **New Flag:** `--strip-metadata` to strip metadata for smaller file sizes
-- **FFmpeg Arguments:** Uses `-map_metadata 0` by default, `-map_metadata -1` with flag
-- **User Impact:** Better preservation of title, artist, album info from RealAudio files
-
-### Counter System Enhancements  
-- **Dry-Run Mode:** Separated "would_convert" count from "skipped" count
-- **Status Display:** Clear distinction between files that would be processed vs already exist
-- **Summary Output:** More accurate reporting in both dry-run and normal modes
-
-### Release Process Fixes
-- **Version Synchronization:** Fixed semantic-release to update all script files properly
-- **Workflow Improvements:** Enhanced PR title normalization and case preservation
-- **Automation Quality:** Removed blocking [skip ci] logic that was preventing releases
+**For version history and recent changes, see [CHANGELOG.md](./CHANGELOG.md)**

@@ -2,6 +2,8 @@
 
 A simple bash script to convert RealAudio (.ra/.ram/.rm) files to MP3 format using FFmpeg.
 
+> **📋 For current version, release notes, and recent changes, see [CHANGELOG.md](./CHANGELOG.md)**
+
 ## Features
 
 - Recursively finds and converts all `.ra`/`.ram`/`.rm` files (case-insensitive)
