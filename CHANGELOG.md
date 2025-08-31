@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/wiiiimm/ra2mp3/compare/v1.3.0...v1.4.0) (2025-08-31)
+
+
+### Features
+
+* preserve metadata by default with --strip-metadata option ([c873116](https://github.com/wiiiimm/ra2mp3/commit/c873116d2ac3dfb0fa06c673d6889dd2e51963af))
+
 # [1.3.0](https://github.com/wiiiimm/ra2mp3/compare/v1.2.1...v1.3.0) (2025-08-31)
 
 
