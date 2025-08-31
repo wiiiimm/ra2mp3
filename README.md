@@ -195,9 +195,33 @@ The script uses FFmpeg's libmp3lame encoder with VBR quality setting 2, which pr
 
 MIT License - feel free to use, modify, and distribute as needed.
 
-## Contributing
+## Development
 
-Issues and pull requests welcome! This is a simple tool but improvements are always appreciated.
+This project uses [Conventional Commits](https://www.conventionalcommits.org/) and [semantic-release](https://semantic-release.gitbook.io/) for automated versioning and releases.
+
+### Semantic Release
+- Automatic version bumping based on commit messages
+- Automated CHANGELOG.md generation
+- GitHub releases with release notes
+- Follows semantic versioning (MAJOR.MINOR.PATCH)
+
+### Pull Request Guidelines
+- PR titles are automatically formatted to conventional commit format
+- Use conventional commit types: `feat:`, `fix:`, `docs:`, `chore:`, etc.
+- Breaking changes should include `!` or `BREAKING CHANGE:` in commit message
+- All PRs include `[skip ci]` to prevent premature deployments
+
+### Contributing
+Issues and pull requests welcome! This project includes automated workflows for:
+- PR title formatting and validation
+- Automated releases and changelog generation
+- Code quality checks
+
+When contributing:
+- Use conventional commit messages (feat:, fix:, docs:, etc.)
+- PR titles are automatically formatted
+- Releases are automated based on commit types
+- See [CHANGELOG.md](./CHANGELOG.md) for release history
 
 ## About RealAudio
 

@@ -4,12 +4,14 @@
 
 **ra2mp3** is a cross-platform bash script that converts RealAudio (.ra) files to MP3 format using FFmpeg. This project was created to help users migrate legacy audio files to a modern, widely-supported format.
 
-### Current Status: v1.1.0 (Production Ready)
+### Current Status: v1.2.0 (Production Ready)
 - ✅ Full feature implementation complete
 - ✅ Cross-platform support (macOS/Linux) 
 - ✅ Comprehensive testing with real RealAudio files
 - ✅ Unicode and special character support
 - ✅ Advanced command-line options
+- ✅ Semantic release automation and CI/CD workflows
+- ✅ Automated changelog generation and PR title management
 
 ## Repository Structure
 
@@ -18,9 +20,18 @@ ra2mp3/
 ├── ra2mp3                 # Main conversion script (bash)
 ├── install_macos.sh       # macOS installer (Homebrew + FFmpeg)
 ├── install_linux.sh       # Linux installer (multi-distro support)
+├── package.json           # NPM package config for semantic-release
+├── CHANGELOG.md           # Generated changelog (semantic-release)
 ├── README.md              # User documentation
 ├── LICENSE                # MIT License
+├── CLAUDE.md              # Minimal redirect to this file
 ├── .gitignore             # Git ignore patterns
+├── .github/
+│   ├── workflows/
+│   │   ├── automated-release.yml    # Semantic release on main push
+│   │   └── pr-title-manager.yml     # PR title automation
+│   └── scripts/
+│       └── normalize-pr-title.js    # PR title normalization logic
 ├── AGENTS.md              # This file - project memory/instructions
 ├── tests/                 # Test RealAudio files (gitignored)
 └── converted/             # Output directory (gitignored)
@@ -29,9 +40,10 @@ ra2mp3/
 ## Core Features
 
 ### Main Script (`ra2mp3`)
-- **Version:** 1.1.0
+- **Version:** 1.2.0
 - **Language:** Bash with strict error handling (`set -euo pipefail`)
 - **Dependencies:** FFmpeg with libmp3lame support
+- **Supported formats:** .ra, .ram, .rm (case-insensitive)
 - **Encoding:** VBR quality 2 (~170-210 kbps)
 
 ### Command-Line Options
@@ -85,9 +97,10 @@ chmod +x ra2mp3
 
 ### Version Management
 - **Format:** Semantic versioning (MAJOR.MINOR.PATCH)
-- **Current:** 1.1.0
-- **Update locations:** All 3 scripts (ra2mp3, install_macos.sh, install_linux.sh)
-- **Git tags:** Create matching tag (e.g., `git tag v1.1.0`)
+- **Current:** 1.2.0
+- **Automation:** semantic-release handles version bumping and git tags
+- **Update locations:** All 3 scripts (ra2mp3, install_macos.sh, install_linux.sh) + package.json
+- **Release process:** Automated via GitHub Actions on main branch push
 
 ### Code Standards
 - **Bash style:** Strict error handling, proper quoting, consistent indentation
@@ -109,24 +122,36 @@ chmod +x ra2mp3
 - **Feature branches:** For major changes (optional for small fixes)
 
 ### Commit Message Format
+Follow [Conventional Commits](https://www.conventionalcommits.org/) specification:
 ```
-Brief description of change
+<type>[optional scope]: <description>
 
-Detailed explanation if needed:
-- Bullet points for multiple changes
-- Reference issue numbers if applicable
+[optional body]
 
-🤖 Generated with [Claude Code](https://claude.ai/code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
+[optional footer(s)]
 ```
 
-### Release Process
-1. Update version in all 3 scripts
-2. Update AGENTS.md if needed
-3. Commit with descriptive message
-4. Create git tag: `git tag vX.Y.Z`
-5. Push everything: `git push && git push origin vX.Y.Z`
+**Types:** feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
+
+**Examples:**
+- `feat: add support for .ram and .rm file formats`
+- `fix: handle unicode characters in filenames properly`
+- `docs: update installation instructions for Linux`
+
+### Automated Release Process
+1. **PR Creation:** Titles automatically formatted to conventional commits
+2. **Main Branch Push:** Triggers semantic-release workflow
+3. **Version Calculation:** Based on commit types (feat = minor, fix = patch)
+4. **CHANGELOG.md:** Generated automatically from commits
+5. **GitHub Release:** Created with release notes
+6. **Git Tags:** Applied automatically
+
+### Manual Release Override
+If needed for hotfixes:
+1. Update version in all 3 scripts + package.json
+2. Update CHANGELOG.md manually
+3. Create conventional commit
+4. Push to main branch (triggers automated release)
 
 ## GitHub Repository
 
@@ -210,5 +235,5 @@ When working on this project:
 
 ---
 
-*Last updated: 2025-08-31 (v1.1.0)*
+*Last updated: 2025-08-31 (v1.2.0)*
 *Remember to update this file when making significant changes to the project.*
