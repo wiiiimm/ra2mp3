@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/wiiiimm/ra2mp3/compare/v1.2.1...v1.3.0) (2025-08-31)
+
+
+### Features
+
+* improve release automation and script quality based on code review ([c839fe8](https://github.com/wiiiimm/ra2mp3/commit/c839fe81ad54bb3a0a114853ffe640dd45fc2318))
+
 ## [1.2.1](https://github.com/wiiiimm/ra2mp3/compare/v1.2.0...v1.2.1) (2025-08-31)
 
 
