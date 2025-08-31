@@ -132,6 +132,7 @@ echo
 current_file=0
 converted_count=0
 skipped_count=0
+would_convert_count=0
 failed_count=0
 
 while IFS= read -r -d '' file; do
@@ -184,7 +185,7 @@ while IFS= read -r -d '' file; do
   # Show what would be done
   if [[ "$DRY_RUN" == true ]]; then
     echo -e "${BLUE}[$current_file/$total_files] 🔍 Would convert: $file → $outfile${NC}"
-    skipped_count=$((skipped_count + 1))
+    would_convert_count=$((would_convert_count + 1))
     continue
   fi
 
@@ -220,4 +221,8 @@ else
 fi
 
 # Summary
-echo -e "${BLUE}Summary:${NC} converted=$converted_count, skipped=$skipped_count, failed=$failed_count"
+if [[ "$DRY_RUN" == true ]]; then
+  echo -e "${BLUE}Summary:${NC} would_convert=$would_convert_count, skipped=$skipped_count, failed=$failed_count"
+else
+  echo -e "${BLUE}Summary:${NC} converted=$converted_count, skipped=$skipped_count, failed=$failed_count"
+fi

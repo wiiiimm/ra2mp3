@@ -48,8 +48,8 @@ function normalizeCaseOnly(title) {
   const normalizedType = type.toLowerCase();
   const normalizedScope = scope ? scope.toLowerCase() : '';
   const normalizedBreaking = breaking || '';
-  // Lowercase the entire description, not just first character
-  const normalizedDescription = description.toLowerCase();
+  // Preserve proper case in description, only ensure sentence case (first letter lowercase)
+  const normalizedDescription = description.charAt(0).toLowerCase() + description.slice(1);
   
   if (scope) {
     return `${normalizedType}(${normalizedScope})${normalizedBreaking}: ${normalizedDescription}`;
@@ -156,8 +156,8 @@ function generateTitle(currentTitle, commits, branchName) {
   
   // No commits - use branch name to determine type
   if (commits.length === 0) {
-    // Lowercase the entire title for consistency
-    const titleToUse = currentTitle.toLowerCase();
+    // Preserve case but ensure sentence case (first letter lowercase)
+    const titleToUse = currentTitle.charAt(0).toLowerCase() + currentTitle.slice(1);
     if (branchName && branchName.includes('feat')) {
       return `feat: ${titleToUse}`;
     } else if (branchName && branchName.includes('fix')) {
@@ -173,8 +173,8 @@ function generateTitle(currentTitle, commits, branchName) {
     const msgMatch = result.message.match(/^([^:]+):\s*(.+)$/i);
     if (msgMatch) {
       const [, prefix, description] = msgMatch;
-      // Lowercase the entire description
-      const normalizedDescription = description.toLowerCase();
+      // Preserve case but ensure sentence case (first letter lowercase)
+      const normalizedDescription = description.charAt(0).toLowerCase() + description.slice(1);
       let newTitle = `${prefix.toLowerCase()}: ${normalizedDescription}`;
       
       // Add breaking change indicator if needed
@@ -193,8 +193,8 @@ function generateTitle(currentTitle, commits, branchName) {
   let baseTitle = currentTitle
     .replace(' [semantic pr title]', '')
     .replace(patterns.removePrefix, '');
-  // Lowercase the entire base title
-  baseTitle = baseTitle.toLowerCase();
+  // Preserve case but ensure sentence case (first letter lowercase)
+  baseTitle = baseTitle.charAt(0).toLowerCase() + baseTitle.slice(1);
   
   // Build the type prefix
   let typePrefix = primaryType;
@@ -255,7 +255,7 @@ function ensureValidFormat(title) {
   }
   
   // Add chore prefix if no valid type found
-  const desc = title.toLowerCase();
+  const desc = title.charAt(0).toLowerCase() + title.slice(1);
   return `chore: ${desc}`;
 }
 
@@ -263,14 +263,14 @@ function ensureValidFormat(title) {
  * Final normalization step
  */
 function finalNormalize(title) {
-  // Normalize the entire title: lowercase type/scope and entire description
+  // Normalize the title: lowercase type/scope but preserve case in description (sentence case)
   return title.replace(/^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\((.+?)\))?(!?): (.+)$/i, 
     (match, type, scopeGroup, scope, breaking, description) => {
       const normalizedType = type.toLowerCase();
       const normalizedScope = scope ? scope.toLowerCase() : '';
       const normalizedBreaking = breaking || '';
-      // Lowercase the entire description
-      const normalizedDescription = description.toLowerCase();
+      // Preserve case but ensure sentence case (first letter lowercase)
+      const normalizedDescription = description.charAt(0).toLowerCase() + description.slice(1);
       
       if (scopeGroup) {
         return `${normalizedType}(${normalizedScope})${normalizedBreaking}: ${normalizedDescription}`;
