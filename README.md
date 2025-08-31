@@ -130,6 +130,7 @@ Options:
   -i, --input DIR      Input directory to recursively search for .ra files (default: current directory)
   -o, --output DIR     Output directory for converted files (default: converted/)
   --overwrite          Overwrite existing MP3 files (forces overwrite)
+  --strip-metadata     Strip metadata for smaller file sizes (default: preserve metadata)
   --dry-run            Show what would be converted without actually converting
   -v, --version        Show version information
   -h, --help           Show this help message
@@ -146,6 +147,9 @@ Options:
 
 # Overwrite existing MP3 files
 ./ra2mp3 --overwrite
+
+# Strip metadata for smaller file sizes
+./ra2mp3 --strip-metadata
 
 # Preview what would be converted (dry run)
 ./ra2mp3 --dry-run

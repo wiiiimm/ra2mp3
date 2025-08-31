@@ -154,10 +154,8 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/) specificatio
 
 ### Manual Release Override
 If needed for hotfixes:
-1. Update version in all 3 scripts + package.json
-2. Update CHANGELOG.md manually
-3. Create conventional commit
-4. Push to main branch (triggers automated release)
+1. Create conventional commit with appropriate type (fix:, feat:, etc.)
+2. Push to main branch (semantic-release handles versioning and CHANGELOG.md automatically)
 
 ## GitHub Repository
 
@@ -194,17 +192,14 @@ tests/
 ### Adding New Features
 1. Update main script (`ra2mp3`)
 2. Update help text in script
-3. Update README.md examples
-4. Test thoroughly with real files
-5. Update version numbers
-6. Commit, tag, and push
+3. Test thoroughly with real files
+4. Commit and push (version bumping and releases are automated)
 
 ### Bug Fixes
 1. Identify issue and create test case
 2. Fix in main script
 3. Test fix with various scenarios
-4. Update patch version (X.Y.Z+1)
-5. Commit and push
+4. Commit and push (version bumping and releases are automated)
 
 ### Platform Support
 - Adding new Linux distributions: Update `install_linux.sh`
@@ -233,15 +228,14 @@ When working on this project:
 
 1. **Always test changes** with actual RealAudio files before committing
 2. **Maintain backward compatibility** - don't break existing usage patterns
-3. **Update all documentation** when adding features (script help, README, this file)
+3. **Update script help text** when adding features (versioning and releases are automated)
 4. **Follow the established patterns** for error handling, user feedback, and code style
 5. **Consider cross-platform implications** for any changes
-6. **Version bumps require updating all 3 scripts** and creating git tags
+6. **Use conventional commits** - semantic-release handles versioning and releases automatically
 7. **Keep it simple** - this is a focused utility tool, not a complex application
 
 ---
 
-*Last updated: 2025-08-31*
-*Remember to update this file when making significant changes to the project.*
+**📋 For version history, recent changes, and release notes, see [CHANGELOG.md](./CHANGELOG.md)**
 
-**For version history and recent changes, see [CHANGELOG.md](./CHANGELOG.md)**
+*This file contains static project architecture and development guidelines. Dynamic information like versions and changes are tracked automatically in CHANGELOG.md.*
