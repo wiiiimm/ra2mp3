@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="1.1.0"
+VERSION="1.2.0"
 
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
+# Prefer UTF-8 if not already set (avoid forcing a specific locale)
+export LC_ALL="${LC_ALL:-en_US.UTF-8}"
+export LANG="${LANG:-en_US.UTF-8}"
 
 # Colors for output
 RED='\033[0;31m'
@@ -26,7 +27,7 @@ show_help() {
     echo "Usage: $0 [OPTIONS]"
     echo
     echo "Options:"
-    echo "  -i, --input DIR      Input directory to search for .ra files (default: current directory)"
+    echo "  -i, --input DIR      Input directory to recursively search for .ra files (default: current directory)"
     echo "  -o, --output DIR     Output directory for converted files (default: converted/)"
     echo "  --overwrite          Overwrite existing MP3 files"
     echo "  --dry-run            Show what would be converted without actually converting"
@@ -39,7 +40,7 @@ show_help() {
     echo "  specified output directory maintaining the original structure."
     echo
     echo "Examples:"
-    echo "  $0                           Convert all .ra files in current directory"
+    echo "  $0                           Convert all .ra files in current directory and subdirectories"
     echo "  $0 --input /path/to/music    Convert files from specific directory"
     echo "  $0 --output /tmp/mp3s        Save converted files to specific location"
     echo "  $0 --overwrite               Overwrite existing MP3 files"
@@ -61,7 +62,7 @@ while [[ $# -gt 0 ]]; do
             exit 0
             ;;
         -i|--input)
-            if [[ -z "$2" || "$2" == -* ]]; then
+            if [[ $# -lt 2 ]] || [[ -z "${2:-}" ]] || [[ "${2:-}" == -* ]]; then
                 echo -e "${RED}Error: --input requires a directory argument${NC}"
                 exit 1
             fi
@@ -69,7 +70,7 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         -o|--output)
-            if [[ -z "$2" || "$2" == -* ]]; then
+            if [[ $# -lt 2 ]] || [[ -z "${2:-}" ]] || [[ "${2:-}" == -* ]]; then
                 echo -e "${RED}Error: --output requires a directory argument${NC}"
                 exit 1
             fi
@@ -111,8 +112,8 @@ fi
 # Convert INPUT_DIR to absolute path for consistency
 INPUT_DIR=$(cd "$INPUT_DIR" && pwd)
 
-# Count total files to convert
-total_files=$(find "$INPUT_DIR" -type f -name '*.ra' | wc -l | tr -d ' ')
+# Count total files to convert (support common RealMedia extensions, case-insensitive)
+total_files=$(find "$INPUT_DIR" -type f \( -iname '*.ra' -o -iname '*.ram' -o -iname '*.rm' \) | wc -l | tr -d ' ')
 
 if [ "$total_files" -eq 0 ]; then
     echo -e "${YELLOW}No .ra files found in '$INPUT_DIR' and subdirectories.${NC}"
@@ -127,10 +128,13 @@ echo -e "${BLUE}Input directory: $INPUT_DIR${NC}"
 echo -e "${BLUE}Output directory: $OUTPUT_DIR${NC}"
 echo
 
-# Initialize counter
+# Initialize counters
 current_file=0
+converted_count=0
+skipped_count=0
+failed_count=0
 
-find "$INPUT_DIR" -type f -name '*.ra' -print0 | while IFS= read -r -d '' file; do
+while IFS= read -r -d '' file; do
   current_file=$((current_file + 1))
   
   # Calculate relative path from input directory
@@ -144,7 +148,9 @@ find "$INPUT_DIR" -type f -name '*.ra' -print0 | while IFS= read -r -d '' file; 
   if [[ "$folder" == "." ]]; then
     folder=""
   fi
-  base="$(basename "$rel" .ra)"
+  # Determine base name without extension (handles .ra/.ram/.rm and case-insensitive)
+  base_full="$(basename "$rel")"
+  base="${base_full%.*}"
   
   # Construct output paths
   if [[ -n "$folder" ]]; then
@@ -163,6 +169,7 @@ find "$INPUT_DIR" -type f -name '*.ra' -print0 | while IFS= read -r -d '' file; 
   if [[ -f "$outfile" ]]; then
     if [[ "$OVERWRITE" != true ]]; then
       echo -e "${GREEN}[$current_file/$total_files] ✓ Exists, skip: $outfile${NC}"
+      skipped_count=$((skipped_count + 1))
       continue
     else
       echo -e "${YELLOW}[$current_file/$total_files] ⚠ Overwriting: $outfile${NC}"
@@ -177,23 +184,33 @@ find "$INPUT_DIR" -type f -name '*.ra' -print0 | while IFS= read -r -d '' file; 
   # Show what would be done
   if [[ "$DRY_RUN" == true ]]; then
     echo -e "${BLUE}[$current_file/$total_files] 🔍 Would convert: $file → $outfile${NC}"
+    skipped_count=$((skipped_count + 1))
     continue
   fi
 
   echo -e "${BLUE}[$current_file/$total_files] → Converting: $file → $outfile${NC}"
 
-  if ffmpeg -nostdin -hide_banner -loglevel warning -stats \
+  # Decide ffmpeg overwrite behavior
+  if [[ "$OVERWRITE" == true ]]; then
+    overwrite_flag=(-y)
+  else
+    overwrite_flag=(-n)
+  fi
+
+  if ffmpeg -nostdin -hide_banner -loglevel error "${overwrite_flag[@]}" \
     -err_detect ignore_err \
     -i "$file" \
     -vn \
     -map_metadata -1 \
     -codec:a libmp3lame -q:a 2 \
-    "$outfile" 2>/dev/null; then
+    "$outfile"; then
     echo -e "${GREEN}[$current_file/$total_files] ✅ Successfully converted: $outfile${NC}"
+    converted_count=$((converted_count + 1))
   else
     echo -e "${RED}[$current_file/$total_files] ❌ Failed to convert: $file${NC}"
+    failed_count=$((failed_count + 1))
   fi
-done
+done < <(find "$INPUT_DIR" -type f \( -iname '*.ra' -o -iname '*.ram' -o -iname '*.rm' \) -print0)
 
 echo
 if [[ "$DRY_RUN" == true ]]; then
@@ -201,3 +218,6 @@ if [[ "$DRY_RUN" == true ]]; then
 else
   echo -e "${GREEN}✅ All done! Check $OUTPUT_DIR directory for your MP3 files.${NC}"
 fi
+
+# Summary
+echo -e "${BLUE}Summary:${NC} converted=$converted_count, skipped=$skipped_count, failed=$failed_count"

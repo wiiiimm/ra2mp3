@@ -1,0 +1,58 @@
+{
+  "name": "ra2mp3",
+  "version": "1.2.0",
+  "description": "Convert RealAudio (.ra/.ram/.rm) files to MP3 format using FFmpeg",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "echo \"No tests configured for bash project\" && exit 0",
+    "lint": "echo \"No linting configured for bash project\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wiiiimm/ra2mp3.git"
+  },
+  "keywords": [
+    "audio-conversion",
+    "realaudio",
+    "mp3",
+    "ffmpeg",
+    "bash-script",
+    "command-line-tool"
+  ],
+  "author": "William Li <email@wiiiimm.codes>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wiiiimm/ra2mp3/issues"
+  },
+  "homepage": "https://github.com/wiiiimm/ra2mp3#readme",
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "semantic-release": "^23.0.0"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md",
+            "package.json",
+            "ra2mp3",
+            "install_macos.sh",
+            "install_linux.sh"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ],
+      "@semantic-release/github"
+    ]
+  }
+}

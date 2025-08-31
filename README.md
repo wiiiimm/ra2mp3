@@ -1,10 +1,10 @@
 # ra2mp3
 
-A simple bash script to convert RealAudio (.ra) files to MP3 format using FFmpeg.
+A simple bash script to convert RealAudio (.ra/.ram/.rm) files to MP3 format using FFmpeg.
 
 ## Features
 
-- Recursively finds and converts all `.ra` files in the current directory
+- Recursively finds and converts all `.ra`/`.ram`/`.rm` files (case-insensitive)
 - Preserves directory structure in the output
 - Skips files that have already been converted
 - Uses high-quality MP3 encoding (VBR quality 2)
@@ -115,6 +115,8 @@ chmod +x ra2mp3
 
 The converted MP3 files will be saved in a `./converted/` directory, maintaining the original folder structure.
 
+Supported input extensions: `.ra`, `.ram`, `.rm` (case-insensitive).
+
 ## Advanced Usage
 
 The script supports several command-line options for more control:
@@ -123,9 +125,9 @@ The script supports several command-line options for more control:
 ./ra2mp3 [OPTIONS]
 
 Options:
-  -i, --input DIR      Input directory to search for .ra files (default: current directory)
+  -i, --input DIR      Input directory to recursively search for .ra files (default: current directory)
   -o, --output DIR     Output directory for converted files (default: converted/)
-  --overwrite          Overwrite existing MP3 files
+  --overwrite          Overwrite existing MP3 files (forces overwrite)
   --dry-run            Show what would be converted without actually converting
   -v, --version        Show version information
   -h, --help           Show this help message
