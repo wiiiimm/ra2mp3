@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**ra2mp3** is a cross-platform bash script that converts RealAudio (.ra) files to MP3 format using FFmpeg. This project was created to help users migrate legacy audio files to a modern, widely-supported format.
+**ra2mp3** is a cross-platform bash script that converts RealAudio (.ra/.ram/.rm) files to MP3 format using FFmpeg. This project was created to help users migrate legacy audio files to a modern, widely-supported format.
 
 ### Current Status: v1.2.0 (Production Ready)
 - ✅ Full feature implementation complete
@@ -101,6 +101,8 @@ chmod +x ra2mp3
 - **Automation:** semantic-release handles version bumping and git tags
 - **Update locations:** All 3 scripts (ra2mp3, install_macos.sh, install_linux.sh) + package.json
 - **Release process:** Automated via GitHub Actions on main branch push
+  
+  Note: CHANGELOG.md contains a 1.2.1 entry while scripts and package.json are at 1.2.0. The next semantic-release run should align versions by bumping the files accordingly.
 
 ### Code Standards
 - **Bash style:** Strict error handling, proper quoting, consistent indentation

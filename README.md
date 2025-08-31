@@ -209,7 +209,7 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org/) a
 - PR titles are automatically formatted to conventional commit format
 - Use conventional commit types: `feat:`, `fix:`, `docs:`, `chore:`, etc.
 - Breaking changes should include `!` or `BREAKING CHANGE:` in commit message
-- All PRs include `[skip ci]` to prevent premature deployments
+- All PRs are automatically formatted to conventional commit format
 
 ### Contributing
 Issues and pull requests welcome! This project includes automated workflows for:

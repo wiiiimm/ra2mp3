@@ -8,7 +8,6 @@ name: PR Title Manager
 #
 # Features:
 # - Respects [skip title auto pr] marker to bypass automation
-# - Ensures [skip ci] is added to prevent immediate deployment
 # - Auto-generates semantic conventional commit titles
 # - Recalculates titles when new commits are added
 
@@ -86,7 +85,7 @@ jobs:
               
               **Make sure your title follows the format:**
               \\\`\\\`\\\`
-              <type>(<scope>): <subject> [skip ci]
+              <type>(<scope>): <subject>
               \\\`\\\`\\\`
               
               **Valid types:** feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
@@ -139,7 +138,6 @@ jobs:
             console.log(`Event type: ${eventType}`);
             
             // Track what markers were present
-            const hasSkipCi = currentTitle.includes('[skip ci]');
             const hasSemanticMarker = currentTitle.includes('[semantic pr title]');
             
             // Get all commit messages from the PR (handles >30 commits)
@@ -158,7 +156,6 @@ jobs:
             // Remove all markers for processing
             const titleWithoutMarkers = currentTitle
               .replace(' [semantic pr title]', '')
-              .replace(' [skip ci]', '')
               .replace(' [skip title auto pr]', '');
             
             // Check if current title (without markers) already follows conventional format
@@ -185,10 +182,7 @@ jobs:
               wasProcessed = true;
             }
             
-            // Always ensure [skip ci] is present
-            if (!newTitle.includes('[skip ci]')) {
-              newTitle = `${newTitle} [skip ci]`;
-            }
+            // No additional markers needed for this project
             
             // Add semantic marker if we processed the title
             if (wasProcessed && !newTitle.includes('[semantic pr title]')) {
@@ -265,8 +259,7 @@ jobs:
             // Determine comment content and post/update sticky comment
             let comment = '';
             const displayTitle = (newTitle !== currentTitle ? newTitle : currentTitle)
-              .replace(' [semantic pr title]', '')
-              .replace(' [skip ci]', '');
+              .replace(' [semantic pr title]', '');
             
             if (eventType === 'synchronize' && wasProcessed && newTitle !== currentTitle) {
               comment = `## 🔄 PR Title Updated
@@ -289,7 +282,6 @@ jobs:
               
               ### What happened:
               - ✅ Title ${action === 'verified' ? 'follows' : 'formatted to'} semantic convention
-              - ✅ ${action === 'verified' ? 'Contains' : 'Added'} \`[skip ci]\` to prevent immediate deployment on merge
               - ✅ ${action === 'verified' ? 'Has' : 'Added'} \`[semantic pr title]\` marker for automatic updates
               
               ### Why this matters:
