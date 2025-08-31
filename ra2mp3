@@ -19,6 +19,7 @@ INPUT_DIR="."
 OUTPUT_DIR="converted"
 OVERWRITE=false
 DRY_RUN=false
+PRESERVE_METADATA=true
 
 # Function to show help
 show_help() {
@@ -30,6 +31,7 @@ show_help() {
     echo "  -i, --input DIR      Input directory to recursively search for .ra files (default: current directory)"
     echo "  -o, --output DIR     Output directory for converted files (default: converted/)"
     echo "  --overwrite          Overwrite existing MP3 files"
+    echo "  --strip-metadata     Strip metadata for smaller file sizes (default: preserve metadata)"
     echo "  --dry-run            Show what would be converted without actually converting"
     echo "  -v, --version        Show version information"
     echo "  -h, --help           Show this help message"
@@ -44,6 +46,7 @@ show_help() {
     echo "  $0 --input /path/to/music    Convert files from specific directory"
     echo "  $0 --output /tmp/mp3s        Save converted files to specific location"
     echo "  $0 --overwrite               Overwrite existing MP3 files"
+    echo "  $0 --strip-metadata          Strip metadata for smaller file sizes"
     echo "  $0 --dry-run                 Preview what would be converted"
     echo "  $0 --version                 Show version"
     echo
@@ -79,6 +82,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --overwrite)
             OVERWRITE=true
+            shift
+            ;;
+        --strip-metadata)
+            PRESERVE_METADATA=false
             shift
             ;;
         --dry-run)
@@ -126,6 +133,11 @@ if [[ "$DRY_RUN" == true ]]; then
 fi
 echo -e "${BLUE}Input directory: $INPUT_DIR${NC}"
 echo -e "${BLUE}Output directory: $OUTPUT_DIR${NC}"
+if [[ "$PRESERVE_METADATA" == true ]]; then
+    echo -e "${BLUE}Metadata: Preserving original file metadata (default)${NC}"
+else
+    echo -e "${BLUE}Metadata: Stripping metadata for smaller files${NC}"
+fi
 echo
 
 # Initialize counters
@@ -198,11 +210,18 @@ while IFS= read -r -d '' file; do
     overwrite_flag=(-n)
   fi
 
+  # Decide metadata mapping behavior
+  if [[ "$PRESERVE_METADATA" == true ]]; then
+    metadata_flag=(-map_metadata 0)
+  else
+    metadata_flag=(-map_metadata -1)
+  fi
+
   if ffmpeg -nostdin -hide_banner -loglevel error "${overwrite_flag[@]}" \
     -err_detect ignore_err \
     -i "$file" \
     -vn \
-    -map_metadata -1 \
+    "${metadata_flag[@]}" \
     -codec:a libmp3lame -q:a 2 \
     "$outfile"; then
     echo -e "${GREEN}[$current_file/$total_files] ✅ Successfully converted: $outfile${NC}"
