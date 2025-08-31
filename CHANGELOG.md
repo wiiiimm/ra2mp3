@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/wiiiimm/ra2mp3/compare/v1.1.0...v1.2.0) (2025-08-31)
+
+
+### Features
+
+* add semantic release workflows and pr title management ([3c0a8c5](https://github.com/wiiiimm/ra2mp3/commit/3c0a8c580fbf70a89b32e0d27f67ef99a793b0d2))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
