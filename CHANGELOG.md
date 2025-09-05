@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/wiiiimm/ra2mp3/compare/v1.4.0...v1.5.0) (2025-09-05)
+
+
+### Bug Fixes
+
+* correct YAML syntax in GitHub workflows ([312f666](https://github.com/wiiiimm/ra2mp3/commit/312f6664b1e2a3b39c834fe468f6f52dc7686e68))
+
+
+### Features
+
+* add GitHub workflows for automated releases and Homebrew deployment ([ff25da3](https://github.com/wiiiimm/ra2mp3/commit/ff25da3698c66a60016ef5beffac292a5b91c1b7))
+
 # [1.4.0](https://github.com/wiiiimm/ra2mp3/compare/v1.3.0...v1.4.0) (2025-08-31)
 
 

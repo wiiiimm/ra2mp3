@@ -1,6 +1,6 @@
 {
   "name": "ra2mp3",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Convert RealAudio (.ra/.ram/.rm) files to MP3 format using FFmpeg",
   "private": true,
   "type": "module",

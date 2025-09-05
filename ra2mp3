@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="1.4.0"
+VERSION="1.5.0"
 
 # Prefer UTF-8 if not already set (avoid forcing a specific locale)
 export LC_ALL="${LC_ALL:-en_US.UTF-8}"
