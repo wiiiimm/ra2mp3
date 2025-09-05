@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/wiiiimm/ra2mp3/compare/v1.5.0...v1.5.1) (2025-09-05)
+
+
+### Bug Fixes
+
+* prevent workflow loops on automated release commits ([d6b8ca7](https://github.com/wiiiimm/ra2mp3/commit/d6b8ca76c934aa3da8977c77c3b6ea01ca22ab7d))
+
 # [1.5.0](https://github.com/wiiiimm/ra2mp3/compare/v1.4.0...v1.5.0) (2025-09-05)
 
 
