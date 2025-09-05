@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/wiiiimm/ra2mp3/compare/v1.5.1...v1.5.2) (2025-09-05)
+
+
+### Bug Fixes
+
+* correct YAML syntax for conditional expressions in workflows ([bbd67f2](https://github.com/wiiiimm/ra2mp3/commit/bbd67f2010b3ba2fa0cc18b82629d5599fb1eece))
+
 ## [1.5.1](https://github.com/wiiiimm/ra2mp3/compare/v1.5.0...v1.5.1) (2025-09-05)
 
 
