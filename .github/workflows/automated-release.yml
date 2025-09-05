@@ -91,25 +91,25 @@ jobs:
           if [ ! -f "$FORMULA" ]; then
             echo "Creating new Homebrew formula for ra2mp3..."
             mkdir -p Formula
-            cat > "$FORMULA" << 'EOF'
-class Ra2mp3 < Formula
-  desc "Convert RealAudio (.ra/.ram/.rm) files to MP3 format using FFmpeg"
-  homepage "https://github.com/wiiiimm/ra2mp3"
-  url "https://github.com/wiiiimm/ra2mp3/archive/v0.0.0.tar.gz"
-  sha256 "placeholder"
-  license "MIT"
+            cat > "$FORMULA" << 'FORMULA_END'
+          class Ra2mp3 < Formula
+            desc "Convert RealAudio (.ra/.ram/.rm) files to MP3 format using FFmpeg"
+            homepage "https://github.com/wiiiimm/ra2mp3"
+            url "https://github.com/wiiiimm/ra2mp3/archive/v0.0.0.tar.gz"
+            sha256 "placeholder"
+            license "MIT"
 
-  depends_on "ffmpeg"
+            depends_on "ffmpeg"
 
-  def install
-    bin.install "ra2mp3"
-  end
+            def install
+              bin.install "ra2mp3"
+            end
 
-  test do
-    system "#{bin}/ra2mp3", "--version"
-  end
-end
-EOF
+            test do
+              system "#{bin}/ra2mp3", "--version"
+            end
+          end
+          FORMULA_END
           fi
           
           # Calculate SHA256 for the release tarball
