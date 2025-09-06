@@ -14,13 +14,38 @@ A simple bash script to convert RealAudio (.ra/.ram/.rm) files to MP3 format usi
 
 ## Prerequisites
 
-- **FFmpeg** with libmp3lame support
 - **bash** (included with macOS/Linux)
+- **FFmpeg** with libmp3lame support (automatically installed via Homebrew, or see manual installation below)
 - **macOS/Linux** (Windows users can use WSL)
 
-### Quick Installation
+## Installation
 
-We provide automatic installers for both macOS and Linux:
+### 🍺 Homebrew Installation (Recommended for macOS/Linux)
+
+The easiest way to install ra2mp3 is via Homebrew, which **automatically installs all dependencies** including FFmpeg:
+
+```bash
+# Install Homebrew if you don't have it (macOS/Linux):
+# macOS: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Linux: Follow instructions at https://brew.sh
+
+# Add the tap and install ra2mp3 (FFmpeg will be installed automatically)
+brew tap wiiiimm/tap
+brew install ra2mp3
+
+# Now you can use ra2mp3 from anywhere!
+ra2mp3 --help
+```
+
+**Benefits of Homebrew installation:**
+- ✅ Automatically installs FFmpeg dependency
+- ✅ Easy updates via `brew upgrade ra2mp3`
+- ✅ Available system-wide (no need to download scripts)
+- ✅ Managed by your package manager
+
+### Alternative Installation Methods
+
+If you prefer not to use Homebrew, we provide automatic installers for both macOS and Linux:
 
 **macOS:**
 ```bash
@@ -67,7 +92,20 @@ sudo yum install ffmpeg
 
 ## Usage
 
-### Quick Start
+### Quick Start (If installed via Homebrew)
+
+```bash
+# Go to your directory with .ra files
+cd /path/to/your/ra/files
+
+# Simply run ra2mp3 (it's already in your PATH!)
+ra2mp3
+
+# Or convert files from a specific directory
+ra2mp3 --input /path/to/music --output /path/to/mp3s
+```
+
+### Quick Start (Without Homebrew)
 
 **macOS:**
 ```bash
@@ -101,7 +139,7 @@ chmod +x ra2mp3
 ./ra2mp3
 ```
 
-### Manual Setup (All Platforms)
+### Manual Setup
 ```bash
 # Go to your directory with .ra files
 cd /path/to/your/ra/files
